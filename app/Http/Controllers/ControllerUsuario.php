@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Usuario;
+use Illuminate\Support\Facades\DB;
 
 class ControllerUsuario extends Controller
 {
@@ -21,7 +22,7 @@ class ControllerUsuario extends Controller
      */
     public function store(Request $request)
     {
-        
+
     }
 
     /**
@@ -29,7 +30,7 @@ class ControllerUsuario extends Controller
      */
     public function show(string $id)
     {
-        
+
     }
 
     /**
@@ -37,7 +38,7 @@ class ControllerUsuario extends Controller
      */
     public function update(Request $request, string $id)
     {
-        
+
     }
 
     /**
@@ -45,6 +46,10 @@ class ControllerUsuario extends Controller
      */
     public function destroy(string $id)
     {
-        
+
+    }
+
+    static function updatePg(string $id){
+        DB::update('update usuarios set pj = pj + 1  where id = :id', ["id" => $id]);
     }
 }

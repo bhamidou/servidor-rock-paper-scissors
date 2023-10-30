@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Ronda;
-
+use Illuminate\Support\Facades\DB;
 class ControllerRonda extends Controller
 {
     /**
@@ -21,7 +21,8 @@ class ControllerRonda extends Controller
      */
     public function store(Request $request)
     {
-        //
+        DB::insert('insert into ronda (estado, ganador) values (0, 0)');
+
     }
 
     /**
