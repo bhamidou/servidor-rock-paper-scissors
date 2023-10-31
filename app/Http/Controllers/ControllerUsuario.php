@@ -20,8 +20,17 @@ class ControllerUsuario extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $req)
     {
+        $vec = [
+            "nombre" => $req->get("nombre"),
+            "email" => $req->get("email"),
+            "password" => $req->get("password"),
+            "pg" => $req->get("pg"),
+            "pj" => $req->get("pj")
+        ];
+
+        DB::insert('insert into usuario (nombre, email, password, pg, pj) values ( :nombre, :email ,:password , :pg , :pj)', $vec);
 
     }
 
