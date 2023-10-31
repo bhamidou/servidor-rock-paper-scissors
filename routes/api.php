@@ -30,23 +30,25 @@ Route::prefix('admin')->group( function ()  {
         });
     });
 
-    Route::controller(ControllerPartida::class)->group( function () {
-        Route::prefix('partida')->group(function (){
-            Route::get('/','index');
-            Route::get('/{id}','show');
-            Route::put('/{id}','update');
-            Route::post('/','store');
-            Route::delete('/{id}','destroy');
-        });
-    });
 
-    Route::controller(ControllerRonda::class)->group( function () {
-        Route::prefix('ronda')->group(function (){
-            Route::get('/','index');
-            Route::get('/{id}','show');
-            Route::put('/{id}','update');
-            Route::post('/','store');
-            Route::delete('/{id}','destroy');
-        });
+});
+
+Route::controller(ControllerPartida::class)->group( function () {
+    Route::prefix('partida')->group(function (){
+        Route::get('/','index');
+        Route::get('/{id}','show');
+        Route::put('/{id}','update');
+        Route::post('/','store');
+        Route::delete('/{id}','destroy');
+    });
+});
+
+Route::controller(ControllerRonda::class)->group( function () {
+    Route::prefix('ronda')->group(function (){
+        Route::get('/','index');
+        Route::get('/{id}','show');
+        Route::put('/{id}','update');
+        Route::post('/','store');
+        Route::delete('/{id}','destroy');
     });
 });
