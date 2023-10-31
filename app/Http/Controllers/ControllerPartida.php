@@ -47,8 +47,9 @@ class ControllerPartida extends Controller
 
             if ($numRondas[0]->count <= 5 || $numRondas[0]->count == null) {
                 DB::insert('insert into partidas ( idRonda, idUser1, tirada1, idUser2, tirada2, ganador) values (:idRonda, :idUser1, :tirada1, :idUser2, :tirada2, :ganador)',$vecInsert );
-                ControllerUsuario::updatePg($ordered["idUser1"]);
-                ControllerUsuario::updatePg($ordered["idUser2"]);
+
+                ControllerUsuario::updatePg($idUsuario1);
+                ControllerUsuario::updatePg($idUsuario2);
 
                 $rtnMsg = ["ganador" => $vecInsert["ganador"]];
             } else {
