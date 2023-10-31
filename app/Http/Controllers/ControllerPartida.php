@@ -38,7 +38,6 @@ class ControllerPartida extends Controller
                 ControllerUsuario::updatePg($ordered["idUser1"]);
                 ControllerUsuario::updatePg($ordered["idUser2"]);
 
-
                 $rtnMsg = ["ganador" => $vecInsert["ganador"]];
             } else {
                 $rtnMsg = "Need create new game";
@@ -135,8 +134,15 @@ class ControllerPartida extends Controller
 
     private function checkRequiredValues($req)
     {
+        
+        $v = [
+            "idUser1" => $req->get("idUser1"),
+            "idUser2" => $req->get("idUser2"),
+            "tirada1" => $req->get("tirada1"),
+            "tirada2" => $req->get("tirada2"),
+            "idRonda" => $req->get("idRonda")
+        ];
 
-        $v = ["idUser1" => $req->get("idUser1"), "idUser2" => $req->get("idUser2"), "tirada1" => $req->get("tirada1"), "tirada2" => $req->get("tirada2"), "idRonda" => $req->get("idRonda")];
         $aux = 0;
 
         foreach ($v as $value) {
