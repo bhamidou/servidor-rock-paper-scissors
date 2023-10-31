@@ -23,7 +23,7 @@ class ControllerPartida extends Controller
      */
     public function store(Request $req)
     {
-        if ($this->checkRequiredValues($req)) {
+        if ($this->checkRequiredValues($req)["returnCheck"]) {
 
             $vec = [$req->get("idUser1"), $req->get("idUser2")];
 
@@ -56,7 +56,9 @@ class ControllerPartida extends Controller
                 $rtnMsg = "Need create new game";
             }
         } else {
-            $rtnMsg = "Required parameters";
+            $requiredValues = $this->checkRequiredValues($req);
+            unset($requiredValues["returnCheck"]);
+            $rtnMsg = ["Required parameters",  $requiredValues];
         }
 
         return response()->json($rtnMsg);
@@ -157,18 +159,21 @@ class ControllerPartida extends Controller
         ];
 
         $aux = 0;
+        $valueEmpty = ["returnCheck" => false];
 
-        foreach ($v as $value) {
+        foreach ($v as $key => $value) {
             if (!$this->checkEmptyValue($value)) {
                 $aux++;
+            }else{
+                array_push($valueEmpty, $key);
             }
         }
-        $check = false;
 
         if ($aux == count($v)) {
-            $check = true;
+            $valueEmpty["returnCheck"] = true;
         }
-        return $check;
+
+        return $valueEmpty;
     }
 
 
