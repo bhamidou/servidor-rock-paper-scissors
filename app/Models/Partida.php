@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Partida extends Model
 {
     use HasFactory;
-    protected $table = "partidas";
+    protected $table = "partida";
     public $timestamps = false;
     protected $hidden = ['pass'];
 
