@@ -7,6 +7,23 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
+## EndPoints
+
+### New user
+
+`POST: /admin/user`
+
+```json
+{
+  "nombre": "Miguel",
+  "email": "miguel@example.com",
+  "password": "StrongPassword!23",
+  "pg": "7",
+  "pj": "14"
+}
+```
+
+
 
 ## License
 
