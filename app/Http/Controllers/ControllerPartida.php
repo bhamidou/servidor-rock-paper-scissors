@@ -29,7 +29,19 @@ class ControllerPartida extends Controller
 
             $ordered = $this->orderIdUser($vec[0], $vec[1]);
 
-            $vecInsert = ["idUser1" =>  $ordered["idUser1"], "idUser2" =>  $ordered["idUser2"], "tirada1" => $req->get("tirada1"), "tirada2" => $req->get("tirada2"), "idRonda" => $req->get("idRonda"), "ganador" => $this->checkWinner( $ordered["idUser1"], $ordered["idUser2"], $req->get("tirada1"), $req->get("tirada2"))];
+            $idUsuario1 = $ordered["idUser1"];
+            $idUsuario2 = $ordered["idUser2"];
+
+            $tirada1 = $req->get("tirada1");
+            $tirada2 = $req->get("tirada2");
+
+            $vecInsert = [
+                "idUser1" => $idUsuario1,
+                "idUser2" => $idUsuario2,
+                "tirada1" => $tirada1,
+                "tirada2" => $tirada2,
+                "idRonda" => $req->get("idRonda"),
+                "ganador" => $this->checkWinner($tirada1, $idUsuario1,$tirada2,$idUsuario2)];
 
             $numRondas = $this->checkRonda($ordered["idUser1"], $ordered["idUser2"], $req->get("idRonda"));
 
@@ -134,7 +146,7 @@ class ControllerPartida extends Controller
 
     private function checkRequiredValues($req)
     {
-        
+
         $v = [
             "idUser1" => $req->get("idUser1"),
             "idUser2" => $req->get("idUser2"),
