@@ -29,8 +29,6 @@ Route::prefix('admin')->group( function ()  {
             Route::delete('/{id}','destroy');
         });
     });
-
-
 });
 
 Route::controller(ControllerPartida::class)->group( function () {

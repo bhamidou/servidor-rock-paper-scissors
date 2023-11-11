@@ -6,6 +6,7 @@ use App\Models\Partida;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\ControllerUsuario;
+use Illuminate\Support\Facades\Validator;
 
 class ControllerPartida extends Controller
 {
@@ -23,31 +24,49 @@ class ControllerPartida extends Controller
      */
     public function store(Request $req)
     {
-        if ($this->checkRequiredValues($req)) {
 
-            $vec = [$req->get("idUser1"), $req->get("idUser2")];
+        $input = $req->all();
+        $messages = [
+            'id_ronda' => [
+                "required" =>"El id de la ronda es necesario",
+                "exists" =>"El id de la ronda no existe",
+        ],
+            'id_user_1' => [
+                'required' => 'Es necesario el id del usuario 1',
+                'exist' => 'Este usuario no existe',
+            ],
+            'tirada_user_1' => 'La tirada 1 solo puede ser rock,paper o scissors',
+            'id_user_2' => [
+                'required' => 'Es necesario el id del usuario 2',
+                'exist' => 'Este usuario no existe',
+            ],
+            'tirada_user_2' => 'La tirada 2 solo puede ser rock,paper o scissors',
+        ];
 
-            $ordered = $this->orderIdUser($vec[0], $vec[1]);
+        $validator = Validator::make($req->all(), [
+            'id_ronda' => 'required|exists:ronda,id',
+            'id_user_1' => 'required|exists:usuario,id|different:id_user_2',
+            'tirada_user_1' => 'required|in :rock,paper,scissors',
+            'id_user_2' => 'required|exists:usuario,id|different:id_user_1',
+            'tirada_user_2' => 'required|in :rock,paper,scissors'
+        ], $messages);
 
-            $vecInsert = ["idUser1" =>  $ordered["idUser1"], "idUser2" =>  $ordered["idUser2"], "tirada1" => $req->get("tirada1"), "tirada2" => $req->get("tirada2"), "idRonda" => $req->get("idRonda"), "ganador" => $this->checkWinner( $ordered["idUser1"], $ordered["idUser2"], $req->get("tirada1"), $req->get("tirada2"))];
-
-            $numRondas = $this->checkRonda($ordered["idUser1"], $ordered["idUser2"], $req->get("idRonda"));
-
-            if ($numRondas[0]->count <= 5 || $numRondas[0]->count == null) {
-                DB::insert('insert into partidas ( idRonda, idUser1, tirada1, idUser2, tirada2, ganador) values (:idRonda, :idUser1, :tirada1, :idUser2, :tirada2, :ganador)',$vecInsert );
-                ControllerUsuario::updatePg($ordered["idUser1"]);
-                ControllerUsuario::updatePg($ordered["idUser2"]);
-
-
-                $rtnMsg = ["ganador" => $vecInsert["ganador"]];
-            } else {
-                $rtnMsg = "Need create new game";
-            }
-        } else {
-            $rtnMsg = "Required parameters";
+        
+        if($validator->fails()){
+            return response()->json($validator->errors(),202);
         }
 
-        return response()->json($rtnMsg);
+        $ganador = $this->checkWinner($req->get("tirada_user_1"),$req->get("tirada_user_2"), $req->get("id_user_1"), $req->get("id_user_2"));
+        $store = [
+            'id_ronda' => $req->get("id_ronda"),
+            'tirada_user_1' => $req->get("tirada_user_1"),
+            'tirada_user_2' => $req->get("tirada_user_2"),
+            'ganador' => $ganador
+        ];
+
+        $partida = Partida::create($store);
+
+        return response()->json($partida);
     }
 
     /**
@@ -77,15 +96,15 @@ class ControllerPartida extends Controller
 
     private function checkRonda(string $idUser1, string $idUser2, string $idRonda)
     {
-        $vec = ["idUser1" => $idUser1, "idUser2" => $idUser2, "idRonda"  =>$idRonda];
+        $vec = ["idUser1" => $idUser1, "idUser2" => $idUser2, "idRonda"  => $idRonda];
 
         $checkNumRondas = \DB::select("SELECT COUNT(ganador) as 'count' FROM partidas WHERE iduser1 = :idUser1 and idUser2 = :idUser2 and idRonda = :idRonda", $vec);
 
         return $checkNumRondas;
     }
 
-    private function createNewRonda(){
-
+    private function createNewRonda()
+    {
     }
 
     private function orderIdUser(string $idUser1, string $idUser2)
@@ -101,56 +120,20 @@ class ControllerPartida extends Controller
         return $order;
     }
 
-    private function checkWinner($tirada1, $idUser1, $tirada2, $idUser2 )
+    private function checkWinner($tirada1, $tirada2, $id1, $id2)
     {
-        /**
-         * 1> rock
-         * 2> paper
-         * 3> scissors
-         * -1 tie (empate)
-         * other number is the idUser
-         */
-
-         $rtnWinner = -1;
-        if($tirada1 != $tirada2){
-            if ($tirada1>$tirada2 && $tirada1 == 2){
-                $rtnWinner =  $idUser1;
-            }elseif($tirada1 == 3 &&  $tirada2 == 2){
-                $rtnWinner =  $idUser1;
-            }elseif($tirada1 == 3 &&  $tirada2 == 1){
-                $rtnWinner =  $idUser2;
-            }else{
-                $rtnWinner =  $idUser2;
+            if ($tirada1 == $tirada2) {
+                $resultado = 0;
+            } else if ($tirada1 == "rock" && $tirada2 == "scissors") {
+                $resultado = $id1;
+            } else if ($tirada1 == "paper" && $tirada2 == "rock") {
+                $resultado = $id1;
+            } else if ($tirada1 == "scissors" && $tirada2 == "paper") {
+                $resultado = $id1;
+            } else {
+                $resultado = $id2;
             }
-        }else{
-            $rtnWinner = -1;
-        }
-        return $rtnWinner;
+            return $resultado;
     }
-
-    private function checkEmptyValue($value)
-    {
-        return empty($value);
-    }
-
-    private function checkRequiredValues($req)
-    {
-
-        $v = ["idUser1" => $req->get("idUser1"), "idUser2" => $req->get("idUser2"), "tirada1" => $req->get("tirada1"), "tirada2" => $req->get("tirada2"), "idRonda" => $req->get("idRonda")];
-        $aux = 0;
-
-        foreach ($v as $value) {
-            if (!$this->checkEmptyValue($value)) {
-                $aux++;
-            }
-        }
-        $check = false;
-
-        if ($aux == count($v)) {
-            $check = true;
-        }
-        return $check;
-    }
-
 
 }

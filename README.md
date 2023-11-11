@@ -7,6 +7,17 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
+## Seed
+
+primero el de usuarios y luego el de rondas y por último el de las partidas
+
+php artisan db:seed --class=UsuarioSeeder
+
+php artisan db:seed --class=RondaSeeder
+
+php artisan db:seed --class=PartidaSeeder
+
+
 ## EndPoints
 
 ### New user

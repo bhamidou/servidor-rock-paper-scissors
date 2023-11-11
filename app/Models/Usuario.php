@@ -11,4 +11,13 @@ class Usuario extends Model
     protected $table = "usuario";
     public $timestamps = false;
     protected $hidden = ['password'];
+    protected $fillable = [
+        'id',
+        'nombre',
+        'email',
+        'pg',
+        'pj',
+        'rol'
+      ];
+
 }
