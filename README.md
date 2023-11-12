@@ -34,6 +34,13 @@ php artisan db:seed --class=PartidaSeeder
 }
 ```
 
+crear nueva ronda:
+
+{
+  "id_user_1" : 1,
+  "id_user_2" : 10,
+}
+
 
 
 ## License
