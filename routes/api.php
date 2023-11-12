@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\ControllerPartida;
 use App\Http\Controllers\ControllerRonda;
 use Illuminate\Http\Request;
@@ -71,3 +72,11 @@ Route::controller(ControllerUsuario::class)->group( function () {
         Route::get('/{id}','show');
     });
 });
+
+Route::controller(AuthController::class)->group(function(){
+    Route::get('/signup','signup');
+    Route::get('/login','login');
+    Route::get('/logout','logout');
+
+});
+

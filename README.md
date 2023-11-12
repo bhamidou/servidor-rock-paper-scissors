@@ -32,6 +32,16 @@ php artisan db:seed --class=PartidaSeeder
 }
 ```
 
+lo que debe de devolver:
+{
+  "success": true,
+  "data": {
+    "token": "4|qMlhJ17YMQqqVWSdKIeILyaE3xnKjIEfqjwlR2fr09bb12ec",
+    "name": "test"
+  },
+  "message": "User logged-in!"
+}
+
 crear nueva ronda:
 
 {

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\Usuario;
 use Illuminate\Support\Facades\DB;
@@ -33,7 +34,7 @@ class ControllerUsuario extends Controller
 
     $validator = Validator::make($request->all(), [
         'nombre' => 'required',
-        'email' => 'required|email|unique:usuario,email',
+        'email' => 'required|email|unique:User,email',
         'password' => 'required'
     ], $messages);
 
@@ -42,7 +43,7 @@ class ControllerUsuario extends Controller
     }
 
     // Si la validación es exitosa, entonces almacenamos el usuario
-    $user = new Usuario;
+    $user = new User;
     $user->id = $request->id;
     $user->nombre = $request->nombre;
     $user->email = $request->email;

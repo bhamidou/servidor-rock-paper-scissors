@@ -19,6 +19,8 @@ return new class extends Migration
             $table->integer('pg')->default(0);
             $table->integer('pj')->default(0);
             $table->integer('rol')->default(0);
+            $table->rememberToken();
+            $table->timestamps();
         });
     }
 

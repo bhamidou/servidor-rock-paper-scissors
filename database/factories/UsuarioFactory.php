@@ -22,7 +22,7 @@ class UsuarioFactory extends Factory
         return [
             'nombre' => $this->faker->name,
             'email' => $this->faker->email ,
-            'password' => Hash::make($this->faker->password()),
+            'password' => bcrypt($this->faker->password()),
             'pg' => rand(0,100),
             'pj' => rand(50,100),
             'rol' => rand(0,5)
