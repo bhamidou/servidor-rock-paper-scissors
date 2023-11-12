@@ -21,6 +21,7 @@ use App\Http\Controllers\ControllerUsuario;
 
 Route::prefix('admin')->group( function ()  {
     Route::controller(ControllerUsuario::class)->group( function () {
+
         Route::prefix('user')->group(function (){
             Route::get('/','index');
             Route::get('/{id}','show');
@@ -60,5 +61,13 @@ Route::controller(ControllerRonda::class)->group( function () {
     Route::prefix('ronda')->group(function (){
         Route::get('/{id}','show');
         Route::post('/','store');
+    });
+});
+
+Route::controller(ControllerUsuario::class)->group( function () {
+    Route::prefix('user')->group(function (){
+        Route::post('/','store');
+        Route::get('/','index');
+        Route::get('/{id}','show');
     });
 });
