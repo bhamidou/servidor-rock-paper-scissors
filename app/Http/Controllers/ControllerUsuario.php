@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Usuario;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
 class ControllerUsuario extends Controller
@@ -45,12 +46,13 @@ class ControllerUsuario extends Controller
     $user->id = $request->id;
     $user->nombre = $request->nombre;
     $user->email = $request->email;
+    $user->password = Hash::make($request->password);
     $user->pg = 0;
     $user->pj = 0;
     $user->rol = 0;
     $user->save();
 
-    return redirect('users')->json(["msg" => $user], 200);
+    return response()->json(["msg" => $user], 200);
 }
 
 
@@ -81,4 +83,9 @@ class ControllerUsuario extends Controller
     static function updatePg(string $id){
         DB::update('update usuarios set pj = pj + 1  where id = :id', ["id" => $id]);
     }
+
+    static function updatePj(string $id){
+        DB::update('update usuarios set pg = pg + 1  where id = :id', ["id" => $id]);
+    }
+    
 }

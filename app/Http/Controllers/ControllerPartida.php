@@ -86,6 +86,9 @@ class ControllerPartida extends Controller
                     $rtnMsg = "ID: " . $ganador . "  ha ganado 3 partidas";
 
                     ControllerRonda::updateFinPartida($idronda, $ganador);
+                    ControllerUsuario::updatePg($ganador);
+                    ControllerUsuario::updatePj($ganador);
+
 
                     return response()->json(["msg" => $rtnMsg, "ronda" => "finalizada"], 202);
                 }
@@ -98,6 +101,8 @@ class ControllerPartida extends Controller
 
                     //Si se llega a las 3 victorias de la partida se actualiza el estado y el ganador de la ronda
                     ControllerRonda::updateFinPartida($idronda, $ganador);
+                    ControllerUsuario::updatePg($ganador);
+                    ControllerUsuario::updatePj($ganador);
 
                     return response()->json(["msg" => $rtnMsg, "ronda" => "finalizada"], 202);
                 }
@@ -120,6 +125,8 @@ class ControllerPartida extends Controller
 
                     //Si se llega a las 3 victorias de la partida se actualiza el estado y el ganador de la ronda
                     ControllerRonda::updateFinPartida($idronda, $ganador);
+                    ControllerUsuario::updatePg($ganador);
+                    ControllerUsuario::updatePj($ganador);
 
                     return response()->json(["msg" => $rtnMsg, "ronda" => "finalizada"], 202);
                 } else {

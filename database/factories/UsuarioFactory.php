@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Usuario;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\Hash;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Usuario>
@@ -21,7 +22,7 @@ class UsuarioFactory extends Factory
         return [
             'nombre' => $this->faker->name,
             'email' => $this->faker->email ,
-            'password' => $this->faker->password(),
+            'password' => Hash::make($this->faker->password()),
             'pg' => rand(0,100),
             'pj' => rand(50,100),
             'rol' => rand(0,5)
