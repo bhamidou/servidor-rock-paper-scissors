@@ -82,11 +82,11 @@ class ControllerUsuario extends Controller
     }
 
     static function updatePg(string $id){
-        DB::update('update usuarios set pj = pj + 1  where id = :id', ["id" => $id]);
+        DB::update('update users set pj = pj + 1  where id = :id', ["id" => $id]);
     }
 
     static function updatePj(string $id){
-        DB::update('update usuarios set pg = pg + 1  where id = :id', ["id" => $id]);
+        DB::update('update users set pg = pg + 1  where id = :id', ["id" => $id]);
     }
     
 }

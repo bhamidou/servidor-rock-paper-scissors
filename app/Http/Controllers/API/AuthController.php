@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Service\MailController;
 use App\Models\User;
 use App\Models\Usuario;
 use Illuminate\Http\Request;
@@ -18,7 +19,11 @@ class AuthController extends Controller
         if(Auth::attempt($cred)){
             $auth = Auth::user();
 
-            $success['token'] =  $auth->createToken('LaravelSanctumAuth')->plainTextToken;
+            if($auth->rol){
+                $success['token'] =  $auth->createToken('access_token',["admin"])->plainTextToken;
+            }else{
+                $success['token'] =  $auth->createToken('access_token',["jugar"])->plainTextToken;
+            }
             $success['name'] =  $auth->name;
 
             return response()->json(["success"=>true,"data"=>$success, "message" => "User logged-in!"]);
@@ -50,12 +55,14 @@ class AuthController extends Controller
         $input = $request->all();
         $input['password'] = bcrypt($input['password']);
         $user = User::create($input);
-        $success['token'] =  $user->createToken('LaravelSanctumAuth')->plainTextToken;
+        $success['token'] =  $user->createToken('access_token',["jugar"])->plainTextToken;
         $success['name'] =  $user->name;
+
+        MailController::sendmail($user->name,$user->email,["username"=>$user->name,"email" =>$user->email]);
 
         return response()->json(["success"=>true,"data"=>$success, "message" => "User successfully registered!"]);
     }
-    
+
     public function logout(Request $request)
     {
         $cred = ['email' => $request->email, 'password' => $request->password];

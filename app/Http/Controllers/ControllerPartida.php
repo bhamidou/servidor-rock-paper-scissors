@@ -243,7 +243,7 @@ class ControllerPartida extends Controller
             'id_ronda' => 'required|exists:ronda,id',
             'id_user_1' => [
                 'required',
-                'exists:usuario,id',
+                'exists:users,id',
                 Rule::exists('ronda', 'id_user_1')->where(function (Builder $query) use ($req) {
                     return $query->where('id_user_1', $req['id_user_1'])->where('id', $req['id_ronda']);
                 }),
@@ -252,7 +252,7 @@ class ControllerPartida extends Controller
             'tirada_user_1' => 'required|in :rock,paper,scissors',
             'id_user_2' => [
                 'required',
-                'exists:usuario,id',
+                'exists:users,id',
                 Rule::exists('ronda', 'id_user_2')->where(function (Builder $query) use ($req) {
                     return $query->where('id_user_2', $req['id_user_2'])->where('id', $req['id_ronda']);
                 }),

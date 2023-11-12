@@ -55,7 +55,7 @@ class ControllerRonda extends Controller
         }
         $rtnMsg = ["msg" => $ronda];
         
-        if($aux){
+        if(!empty($aux)){
             $rtnMsg = ["msg" => $ronda, "alert" =>"el ID de los usuarios ha sido reordenado", 
                 "order" => [
                     'id_user_1' => $id_user_1,
@@ -133,12 +133,12 @@ class ControllerRonda extends Controller
         $validator = Validator::make($req->all(), [
             'id_user_1' => [
                 'required',
-                'exists:usuario,id',
+                'exists:users,id',
                 'different:id_user_2'
             ],
             'id_user_2' => [
                 'required',
-                'exists:usuario,id',
+                'exists:users,id',
                 'different:id_user_1'
             ],
         ], $this->msgValidation());

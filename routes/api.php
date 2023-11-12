@@ -21,7 +21,7 @@ use App\Http\Controllers\ControllerUsuario;
 
 
 Route::prefix('admin')->group( function ()  {
-    Route::controller(ControllerUsuario::class)->group( function () {
+    Route::controller(ControllerUsuario::class)->middleware(['auth:sanctum','admin'])->group( function () {
 
         Route::prefix('user')->group(function (){
             Route::get('/','index');
@@ -50,7 +50,7 @@ Route::prefix('admin')->group( function ()  {
 
 //un usuario solo podrá crear nuevas partidas, si el controlador se le permite
 
-Route::controller(ControllerPartida::class)->group( function () {
+Route::controller(ControllerPartida::class)->middleware(['auth:sanctum','jugar'])->group( function () {
     Route::prefix('partida')->group(function (){
         Route::get('/','index');
         Route::get('/{id}','show');
@@ -58,14 +58,14 @@ Route::controller(ControllerPartida::class)->group( function () {
     });
 });
 
-Route::controller(ControllerRonda::class)->group( function () {
+Route::controller(ControllerRonda::class)->middleware(['auth:sanctum','jugar'])->group( function () {
     Route::prefix('ronda')->group(function (){
         Route::get('/{id}','show');
         Route::post('/','store');
     });
 });
 
-Route::controller(ControllerUsuario::class)->group( function () {
+Route::controller(ControllerUsuario::class)->middleware(['auth:sanctum','jugar'])->group( function () {
     Route::prefix('user')->group(function (){
         Route::post('/','store');
         Route::get('/','index');
@@ -74,9 +74,12 @@ Route::controller(ControllerUsuario::class)->group( function () {
 });
 
 Route::controller(AuthController::class)->group(function(){
-    Route::get('/signup','signup');
+    Route::post('/signup','signup');
     Route::get('/login','login');
     Route::get('/logout','logout');
 
 });
 
+Route::get('', function () {
+    return response()->json("Unauthorized",401);
+})->name('nologin');
