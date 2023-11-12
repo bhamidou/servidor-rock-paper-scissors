@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('partida', function (Blueprint $table) {
             $table->id()->unique();
             $table->integer('id_ronda');
-            $table->integer('tirada_user_1');
-            $table->integer('tirada_user_2');
-            $table->integer('winner');
+            $table->string('tirada_user_1');
+            $table->string('tirada_user_2');
+            $table->integer('ganador');
         });
     }
 

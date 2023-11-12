@@ -10,6 +10,13 @@ class Partida extends Model
     use HasFactory;
     protected $table = "partida";
     public $timestamps = false;
-    protected $hidden = ['pass'];
+
+    protected $fillable = [
+        'id',
+        'id_ronda',
+        'tirada_user_1',
+        'tirada_user_2',
+        'ganador'
+      ];
 
 }

@@ -28,27 +28,37 @@ Route::prefix('admin')->group( function ()  {
             Route::post('/','store');
             Route::delete('/{id}','destroy');
         });
+
+        Route::prefix('partida')->group(function (){
+            Route::get('/','index');
+            Route::get('/{id}','show');
+            Route::put('/{id}','update');
+            Route::post('/','store');
+            Route::delete('/{id}','destroy');
+        });
+        Route::prefix('ronda')->group(function (){
+            Route::get('/','index');
+            Route::get('/{id}','show');
+            Route::put('/{id}','update');
+            Route::post('/','store');
+            Route::delete('/{id}','destroy');
+        });
     });
-
-
 });
+
+//un usuario solo podrá crear nuevas partidas, si el controlador se le permite
 
 Route::controller(ControllerPartida::class)->group( function () {
     Route::prefix('partida')->group(function (){
         Route::get('/','index');
         Route::get('/{id}','show');
-        Route::put('/{id}','update');
         Route::post('/','store');
-        Route::delete('/{id}','destroy');
     });
 });
 
 Route::controller(ControllerRonda::class)->group( function () {
     Route::prefix('ronda')->group(function (){
-        Route::get('/','index');
         Route::get('/{id}','show');
-        Route::put('/{id}','update');
         Route::post('/','store');
-        Route::delete('/{id}','destroy');
     });
 });

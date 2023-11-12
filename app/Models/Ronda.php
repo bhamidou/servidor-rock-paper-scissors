@@ -11,4 +11,11 @@ class Ronda extends Model
     protected $table = "ronda";
     public $timestamps = false;
     protected $hidden = ['pass'];
+    protected $fillable = [
+        'id',
+        'id_user_1',
+        'id_user_2',
+        'status',
+        'ganador'
+      ];
 }
