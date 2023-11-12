@@ -72,7 +72,9 @@ class ControllerRonda extends Controller
      */
     public function show(string $id)
     {
-        //
+        $ronda = Ronda::find($id);
+        return response()->json($ronda);
+        
     }
 
     /**
@@ -88,7 +90,16 @@ class ControllerRonda extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        if (Ronda::find($id)) {
+            Ronda::find($id)->delete();
+            return response()->json([
+                "msg" => "Ronda with ID " . $id . " deleted"
+            ], 202);
+        } else {
+            return response()->json([
+                "msg" => "Ronda with ID " . $id . " not found"
+            ], 404);
+        }
     }
 
     static function updateFinPartida($id_ronda, $id_winner){
