@@ -1,10 +1,15 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html>
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <title>Laravel</title>
+
+        <?php
+            echo "Bienvenido: $username</br>";
+            echo "Tu correo es: <b> $email</b>";
+        ?>
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
