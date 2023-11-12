@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Usuario;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class ControllerUsuario extends Controller
 {
@@ -20,19 +21,38 @@ class ControllerUsuario extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $req)
-    {
-        $vec = [
-            "nombre" => $req->get("nombre"),
-            "email" => $req->get("email"),
-            "password" => $req->get("password"),
-            "pg" => $req->get("pg"),
-            "pj" => $req->get("pj")
-        ];
+    public function store(Request $request){
+    $messages = [
+        'nombre.required' => 'El campo nombre es obligatorio.',
+        'email.required' => 'El campo email es obligatorio.',
+        'email.email' => 'El campo email debe ser una dirección de correo válida.',
+        'email.unique' => 'El email ya está registrado.',
+        'password.required' => 'La contraseña es obligatorio.'
+    ];
 
-        DB::insert('insert into usuario (nombre, email, password, pg, pj) values ( :nombre, :email ,:password , :pg , :pj)', $vec);
+    $validator = Validator::make($request->all(), [
+        'nombre' => 'required',
+        'email' => 'required|email|unique:usuario,email',
+        'password' => 'required'
+    ], $messages);
 
+    if ($validator->fails()) {
+        return response()->json(["msg" => $validator->errors()], 400);
     }
+
+    // Si la validación es exitosa, entonces almacenamos el usuario
+    $user = new Usuario;
+    $user->id = $request->id;
+    $user->nombre = $request->nombre;
+    $user->email = $request->email;
+    $user->pg = 0;
+    $user->pj = 0;
+    $user->rol = 0;
+    $user->save();
+
+    return redirect('users')->json(["msg" => $user], 200);
+}
+
 
     /**
      * Display the specified resource.

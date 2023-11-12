@@ -28,9 +28,7 @@ php artisan db:seed --class=PartidaSeeder
 {
   "nombre": "Miguel",
   "email": "miguel@example.com",
-  "password": "StrongPassword!23",
-  "pg": "7",
-  "pj": "14"
+  "password": "StrongPassword!23"
 }
 ```
 
